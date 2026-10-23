@@ -909,27 +909,7 @@
         definitionExpression: APP_CONFIG.streamGaugeWhere,
         outFields: ["*"],
         refreshInterval: 5,
-        renderer: {
-          type: "unique-value",
-          field: "statusClass",
-          uniqueValueInfos: [
-            {
-              value: 3,
-              label: "Minor Flood",
-              symbol: { type: "simple-marker", style: "diamond", size: 14, color: [0, 229, 255, 1], outline: { color: [255, 255, 255, 1], width: 2.25 } }
-            },
-            {
-              value: 4,
-              label: "Moderate Flood",
-              symbol: { type: "simple-marker", style: "diamond", size: 18, color: [54, 116, 255, 1], outline: { color: [170, 244, 255, 1], width: 2.75 } }
-            },
-            {
-              value: 5,
-              label: "Major Flood",
-              symbol: { type: "simple-marker", style: "diamond", size: 22, color: [255, 43, 214, 1], outline: { color: [255, 255, 255, 1], width: 3.25 } }
-            }
-          ]
-        },
+        // Preserve the authoritative Living Atlas/USGS status renderer supplied by the service.
         popupTemplate: {
           title: "{name}",
           content: [{ type: "fields", fieldInfos: [
