@@ -265,6 +265,7 @@
               <a href="https://www.wpc.ncep.noaa.gov/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/WPC U.S. Hazards Outlook (Days 3–7)</a>
               <a href="https://www.cpc.ncep.noaa.gov/products/predictions/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/CPC U.S. Hazards Outlook (Days 8–14)</a>
               <a href="https://www.arcgis.com/home/item.html?id=81c5a9f2a2704d54a49042a44eefa5d3" target="_blank" rel="noopener noreferrer">Live Stream Gauges source layer</a>
+            <a href="https://www.arcgis.com/home/item.html?id=0c1c1166688f4f2db938194799337be4" target="_blank" rel="noopener noreferrer">ALERTCalifornia Live Cameras source layer</a>
               <a href="https://www.arcgis.com/home/item.html?id=60c98f20a162416ea1725b94d7297f83" target="_blank" rel="noopener noreferrer">Esri ACS Population (Latest)</a>
               <a href="https://www.weather.gov/" target="_blank" rel="noopener noreferrer">Official National Weather Service forecasts and warnings</a>
             </nav>
@@ -331,6 +332,8 @@
       streamGaugeItemId: "81c5a9f2a2704d54a49042a44eefa5d3",
       streamGaugeTitle: "Live Stream Gauges — Flood Stage Only",
       streamGaugeWhere: "statusClass >= 3",
+      alertCaliforniaItemId: "0c1c1166688f4f2db938194799337be4",
+      alertCaliforniaTitle: "ALERTCalifornia Live Cameras",
       demographicTractUrl: "https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Population_View_Boundaries/FeatureServer/2",
       demographicPopulationField: "B01001_001E",
       demographicVintage: "2020–2024 ACS 5-year estimates",
@@ -430,7 +433,7 @@
       backdrop: document.querySelector("#sidebarBackdrop")
     };
 
-    const state = { view: null, map: null, fireLayer: null, firePerimeterLayer: null, demographicLayer: null, geometryEngine: null, populationCache: new Map(), weatherImpactCache: new Map(), streamGaugeLayer: null, outlookLayer: null, intersectionHighlightLayer: null, records: [], fieldMap: {}, selectorRows: [], intersectingIds: [] };
+    const state = { view: null, map: null, fireLayer: null, firePerimeterLayer: null, demographicLayer: null, geometryEngine: null, populationCache: new Map(), weatherImpactCache: new Map(), streamGaugeLayer: null, alertCaliforniaLayer: null, outlookLayer: null, intersectionHighlightLayer: null, records: [], fieldMap: {}, selectorRows: [], intersectingIds: [] };
     const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
     const dateOnlyFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeZone: "UTC" });
 
@@ -920,6 +923,23 @@
       state.map.reorder(gaugeLayer, state.map.layers.length - 1);
     }
 
+    async function addAlertCaliforniaCameras(FeatureLayer) {
+      const cameraLayer = new FeatureLayer({
+        portalItem: { id: APP_CONFIG.alertCaliforniaItemId },
+        layerId: 0,
+        title: APP_CONFIG.alertCaliforniaTitle,
+        outFields: ["*"],
+        refreshInterval: 0.25
+        // The Living Atlas item supplies camera symbols, labels, current-image popup,
+        // and links to the ALERTCalifornia live feed.
+      });
+      await cameraLayer.load();
+      state.alertCaliforniaLayer = cameraLayer;
+      state.map.add(cameraLayer);
+      window.__esriLayers[cameraLayer.title] = cameraLayer;
+      state.map.reorder(cameraLayer, state.map.layers.length - 1);
+    }
+
     async function loadRainfallIntersection(FeatureLayer) {
       const product = APP_CONFIG.forecastProducts[el.outlookDay.value] || APP_CONFIG.forecastProducts.ero1;
       setIntersectionStatus(`Evaluating ${product.shortLabel} spatial intersections…`, "loading");
@@ -1201,6 +1221,7 @@
         installPopulationPopups();
         loadPortalMetadata(PortalItem);
         await addFloodStageGauges(FeatureLayer);
+        await addAlertCaliforniaCameras(FeatureLayer);
         await loadRainfallIntersection(FeatureLayer);
       } catch (error) {
         console.error(error);
