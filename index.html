@@ -67,6 +67,11 @@
     .workspace { display: grid; grid-template-columns: minmax(18rem, 23rem) 1fr; min-height: 0; }
     .sidebar { z-index: 5; min-height: 0; overflow: auto; background: var(--surface); border-right: 1px solid var(--line); box-shadow: var(--shadow); scrollbar-gutter: stable; }
     .sidebar section { padding: .9rem 1rem; border-bottom: 1px solid var(--line); }
+    .sidebar details.text-section { border-bottom: 1px solid var(--line); }
+    .sidebar details.text-section > summary { padding: .9rem 1rem; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    .sidebar details.text-section > summary:hover { background: var(--surface-raised); }
+    .sidebar details.text-section > summary:focus-visible { outline: 3px solid var(--focus); outline-offset: -3px; }
+    .sidebar .text-section-content { padding: 0 1rem .9rem; }
     .sidebar h2 { margin: 0 0 .6rem; font-size: 1rem; }
     .sidebar h3 { margin: .8rem 0 .35rem; font-size: .9rem; }
     .sidebar p, .sidebar li, .meta-grid { font-size: .83rem; line-height: 1.45; }
@@ -157,14 +162,16 @@
     <main class="workspace">
       <div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
       <aside id="sidebar" class="sidebar" aria-label="Readiness information and filters">
-        <section aria-labelledby="purposeTitle">
-          <div class="eyebrow">Operational readiness</div>
-          <h2 id="purposeTitle">Purpose and limits</h2>
-          <div class="notice">
-            This app does not predict debris flows, issue evacuation advice, or replace official watches, warnings, and instructions from public-safety agencies.
+        <details class="text-section" aria-labelledby="purposeTitle">
+          <summary id="purposeTitle">Purpose and limits</summary>
+          <div class="text-section-content">
+            <div class="eyebrow">Operational readiness</div>
+            <div class="notice">
+              This app does not predict debris flows, issue evacuation advice, or replace official watches, warnings, and instructions from public-safety agencies.
+            </div>
+            <p>The readiness signal is a spatial intersection between a published USGS assessment footprint and the selected NOAA precipitation product. Days 1–3 use WPC Excessive Rainfall Outlooks; Days 3–7 and 8–14 use broader NOAA/WPC and NOAA/CPC precipitation-hazard outlooks. This indicates where closer monitoring may be warranted; it is not a debris-flow prediction.</p>
           </div>
-          <p>The readiness signal is a spatial intersection between a published USGS assessment footprint and the selected NOAA precipitation product. Days 1–3 use WPC Excessive Rainfall Outlooks; Days 3–7 and 8–14 use broader NOAA/WPC and NOAA/CPC precipitation-hazard outlooks. This indicates where closer monitoring may be warranted; it is not a debris-flow prediction.</p>
-        </section>
+        </details>
 
         <section aria-labelledby="intersectionTitle">
           <div class="eyebrow">Current monitoring intersection</div>
@@ -238,29 +245,33 @@
           </dl>
         </section>
 
-        <section aria-labelledby="ensoTitle">
-          <h2 id="ensoTitle">NOAA ENSO planning context</h2>
-          <p><strong>NOAA CPC, 8 October 2026:</strong> El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January–March 2027 (greater than an 83% chance).</p>
-          <p>ENSO describes regional seasonal context. It does not establish that a specific burn scar will receive intense rain, and impacts are not guaranteed. Consult current local forecasts and warnings.</p>
-        </section>
+        <details class="text-section" aria-labelledby="ensoTitle">
+          <summary id="ensoTitle">NOAA ENSO planning context</summary>
+          <div class="text-section-content">
+            <p><strong>NOAA CPC, 8 October 2026:</strong> El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January–March 2027 (greater than an 83% chance).</p>
+            <p>ENSO describes regional seasonal context. It does not establish that a specific burn scar will receive intense rain, and impacts are not guaranteed. Consult current local forecasts and warnings.</p>
+          </div>
+        </details>
 
-        <section aria-labelledby="linksTitle">
-          <h2 id="linksTitle">Authoritative resources</h2>
-          <nav class="source-links" aria-label="Authoritative resources">
-            <a href="https://www.arcgis.com/apps/dashboards/c09fa874362e48a9afe79432f2efe6fe" target="_blank" rel="noopener noreferrer">USGS source dashboard</a>
-            <a href="https://www.usgs.gov/programs/landslide-hazards/science/postfire-debris-flow-hazards" target="_blank" rel="noopener noreferrer">USGS post-fire debris-flow hazards and disclaimer context</a>
-            <a href="https://doi.org/10.5066/P14EWYME" target="_blank" rel="noopener noreferrer">USGS data release / ScienceBase collection</a>
-            <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank" rel="noopener noreferrer">Current NOAA CPC ENSO discussion</a>
-            <a href="https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php" target="_blank" rel="noopener noreferrer">NOAA/WPC Excessive Rainfall Outlook (Days 1–3)</a>
-            <a href="https://www.wpc.ncep.noaa.gov/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/WPC U.S. Hazards Outlook (Days 3–7)</a>
-            <a href="https://www.cpc.ncep.noaa.gov/products/predictions/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/CPC U.S. Hazards Outlook (Days 8–14)</a>
-            <a href="https://www.arcgis.com/home/item.html?id=81c5a9f2a2704d54a49042a44eefa5d3" target="_blank" rel="noopener noreferrer">Live Stream Gauges source layer</a>
-            <a href="https://www.arcgis.com/home/item.html?id=60c98f20a162416ea1725b94d7297f83" target="_blank" rel="noopener noreferrer">Esri ACS Population (Latest)</a>
-            <a href="https://www.weather.gov/" target="_blank" rel="noopener noreferrer">Official National Weather Service forecasts and warnings</a>
-          </nav>
-          <h3>USGS use limitation</h3>
-          <p>Although USGS data and metadata have been reviewed for accuracy and completeness and approved for release, no warranty expressed or implied is made regarding display or utility for other purposes or on all computer systems.</p>
-        </section>
+        <details class="text-section" aria-labelledby="linksTitle">
+          <summary id="linksTitle">Authoritative resources</summary>
+          <div class="text-section-content">
+            <nav class="source-links" aria-label="Authoritative resources">
+              <a href="https://www.arcgis.com/apps/dashboards/c09fa874362e48a9afe79432f2efe6fe" target="_blank" rel="noopener noreferrer">USGS source dashboard</a>
+              <a href="https://www.usgs.gov/programs/landslide-hazards/science/postfire-debris-flow-hazards" target="_blank" rel="noopener noreferrer">USGS post-fire debris-flow hazards and disclaimer context</a>
+              <a href="https://doi.org/10.5066/P14EWYME" target="_blank" rel="noopener noreferrer">USGS data release / ScienceBase collection</a>
+              <a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml" target="_blank" rel="noopener noreferrer">Current NOAA CPC ENSO discussion</a>
+              <a href="https://www.wpc.ncep.noaa.gov/qpf/excessive_rainfall_outlook_ero.php" target="_blank" rel="noopener noreferrer">NOAA/WPC Excessive Rainfall Outlook (Days 1–3)</a>
+              <a href="https://www.wpc.ncep.noaa.gov/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/WPC U.S. Hazards Outlook (Days 3–7)</a>
+              <a href="https://www.cpc.ncep.noaa.gov/products/predictions/threats/threats.php" target="_blank" rel="noopener noreferrer">NOAA/CPC U.S. Hazards Outlook (Days 8–14)</a>
+              <a href="https://www.arcgis.com/home/item.html?id=81c5a9f2a2704d54a49042a44eefa5d3" target="_blank" rel="noopener noreferrer">Live Stream Gauges source layer</a>
+              <a href="https://www.arcgis.com/home/item.html?id=60c98f20a162416ea1725b94d7297f83" target="_blank" rel="noopener noreferrer">Esri ACS Population (Latest)</a>
+              <a href="https://www.weather.gov/" target="_blank" rel="noopener noreferrer">Official National Weather Service forecasts and warnings</a>
+            </nav>
+            <h3>USGS use limitation</h3>
+            <p>Although USGS data and metadata have been reviewed for accuracy and completeness and approved for release, no warranty expressed or implied is made regarding display or utility for other purposes or on all computer systems.</p>
+          </div>
+        </details>
       </aside>
 
       <section id="map" class="map-region" aria-label="Interactive post-fire debris-flow assessment map" tabindex="-1">
