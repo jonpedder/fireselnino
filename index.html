@@ -328,7 +328,7 @@
       sourceWebMapId: "838abd63aa7d4b7d9fb70a85ce6e530d",
       fireLayerTitle: "Fire Locations",
       firePerimeterLayerTitle: "Fire Perimeters",
-      streamGaugeUrl: "https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Live_Stream_Gauges_v1/FeatureServer/0",
+      streamGaugeItemId: "81c5a9f2a2704d54a49042a44eefa5d3",
       streamGaugeTitle: "Live Stream Gauges — Flood Stage Only",
       streamGaugeWhere: "statusClass >= 3",
       demographicTractUrl: "https://P3ePLMYs2RVChkJx.svcs.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/ACS_Population_View_Boundaries/FeatureServer/2",
@@ -904,25 +904,13 @@
 
     async function addFloodStageGauges(FeatureLayer) {
       const gaugeLayer = new FeatureLayer({
-        url: APP_CONFIG.streamGaugeUrl,
+        portalItem: { id: APP_CONFIG.streamGaugeItemId },
         title: APP_CONFIG.streamGaugeTitle,
         definitionExpression: APP_CONFIG.streamGaugeWhere,
         outFields: ["*"],
-        refreshInterval: 5,
-        // Preserve the authoritative Living Atlas/USGS status renderer supplied by the service.
-        popupTemplate: {
-          title: "{name}",
-          content: [{ type: "fields", fieldInfos: [
-            { fieldName: "status", label: "Current flood status" },
-            { fieldName: "stage_ft", label: "Gauge height (feet)", format: { places: 2, digitSeparator: true } },
-            { fieldName: "flow_cfs", label: "Flow (cfs)", format: { places: 0, digitSeparator: true } },
-            { fieldName: "lastupdate", label: "Last update" },
-            { fieldName: "lastupdate_age", label: "Hours since update" },
-            { fieldName: "org", label: "Data provider" },
-            { fieldName: "stationid", label: "Station ID" },
-            { fieldName: "governing_location", label: "Governing location" }
-          ]}]
-        }
+        refreshInterval: 5
+        // The Living Atlas item supplies the authoritative USGS renderer and popup,
+        // including Arcade status/height/flow expressions and source-data links.
       });
       await gaugeLayer.load();
       if (!getField(gaugeLayer, "statusClass")) throw new Error("The live stream-gauge schema no longer contains statusClass; the flood-stage filter cannot be applied safely.");
