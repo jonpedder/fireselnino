@@ -938,7 +938,7 @@
       state.alertCaliforniaLayer = cameraLayer;
       state.map.add(cameraLayer);
       window.__esriLayers[cameraLayer.title] = cameraLayer;
-      state.map.reorder(cameraLayer, state.map.layers.length - 1);
+      state.map.reorder(cameraLayer, 0);
     }
 
     async function loadRainfallIntersection(FeatureLayer) {
