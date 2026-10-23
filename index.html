@@ -595,19 +595,19 @@
         symbol: {
           type: "picture-marker",
           url: `data:image/svg+xml,${flameSvg}`,
-          width: highlighted ? 20 : 16,
-          height: highlighted ? 25 : 20
+          width: highlighted ? 15 : 12,
+          height: highlighted ? 19 : 15
         },
         visualVariables: [{
           type: "size",
           valueExpression: `Max(0, Year(Now()) - Year($feature.${dateField}))`,
           valueExpressionTitle: "Fire age in whole calendar years",
           stops: [
-            { value: 0, size: highlighted ? 36 : 27, label: "Current year" },
-            { value: 1, size: highlighted ? 29 : 21, label: "1 year old" },
-            { value: 3, size: highlighted ? 24 : 17, label: "3 years old" },
-            { value: 5, size: highlighted ? 20 : 14, label: "5 years old" },
-            { value: 10, size: highlighted ? 17 : 12, label: "10+ years old" }
+            { value: 0, size: highlighted ? 27 : 20, label: "Current year" },
+            { value: 1, size: highlighted ? 22 : 16, label: "1 year old" },
+            { value: 3, size: highlighted ? 18 : 13, label: "3 years old" },
+            { value: 5, size: highlighted ? 15 : 11, label: "5 years old" },
+            { value: 10, size: highlighted ? 13 : 9, label: "10+ years old" }
           ]
         }]
       };
